@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+define('ROOT', getcwd());
+
+/** @noinspection PhpIncludeInspection */
+require_once ROOT . '/vendor/autoload.php';
+
+use Binarydata\Shpongle\Console\CreateProject;
+
+try {
+    (new CreateProject())->run();
+} catch (Throwable $e) {
+    echo $e->getMessage() . PHP_EOL;
+}
