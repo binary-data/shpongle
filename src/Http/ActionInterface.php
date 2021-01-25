@@ -13,4 +13,6 @@ interface ActionInterface
      * @return mixed[]
      */
     public function getResponseVars(ServerRequestInterface $request): array;
+
+    public function redirectTo(): ?string;
 }

@@ -12,4 +12,9 @@ abstract class BaseAction implements ActionInterface
     {
         return [];
     }
+
+    public function redirectTo(): ?string
+    {
+        return null;
+    }
 }
