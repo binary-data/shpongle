@@ -2,6 +2,7 @@
     "name": "binarydata/shpongle",
     "type": "library",
     "description": "Minimalistic PSR-7 / PSR-15 framework experiment",
+    "license": "MIT",
     "authors": [
         {
             "name": "Anton Belonovich",
