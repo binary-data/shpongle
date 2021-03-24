@@ -12,7 +12,7 @@ final class ConfigFactory
     {
         $files = array_filter(
             scandir(ROOT . 'config'),
-            fn (string $filename) => preg_match('/\.config\.php$\/i', $filename) === 1
+            fn (string $filename) => preg_match('/\.config\.php$/i', $filename) === 1
         );
 
         return new class (new Config($files)) implements ConfigInterface
