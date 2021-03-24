@@ -19,6 +19,7 @@ use Nyholm\Psr7Server\ServerRequestCreator;
 use Nyholm\Psr7Server\ServerRequestCreatorInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -36,6 +37,8 @@ return [
     ActionResolverInterface::class => fn (ContainerActionResolver $r) => $r,
 
     ResponseFactoryInterface::class => fn (Psr17Factory $f) => $f,
+
+    StreamFactoryInterface::class => fn (Psr17Factory $f) => $f,
 
     EmitterInterface::class => fn (SapiEmitter $e) => $e,
 
