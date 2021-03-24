@@ -8,6 +8,8 @@ use Binarydata\Shpongle\Http\Middleware\ContainerMiddlewareResolver;
 use Binarydata\Shpongle\Http\Middleware\MiddlewareResolverInterface;
 use Binarydata\Shpongle\Http\Middleware\NotFoundHandler;
 use Binarydata\Shpongle\Http\ActionResolverInterface;
+use Binarydata\Shpongle\Service\Config\ConfigFactory;
+use Binarydata\Shpongle\Service\Config\ConfigInterface;
 use Binarydata\Shpongle\Template\TemplateRendererInterface;
 use Binarydata\Shpongle\Template\TwigRenderer;
 use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
@@ -40,4 +42,6 @@ return [
     TemplateRendererInterface::class => function () {
         return new TwigRenderer(new Environment(new FilesystemLoader(ROOT . 'templates')));
     },
+
+    ConfigInterface::class => fn (ConfigFactory $f) => $f->create(),
 ];
