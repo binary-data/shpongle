@@ -6,8 +6,9 @@ namespace Binarydata\Shpongle\Http;
 
 class RequestAttribute
 {
-    public const ACTION = 'action',
+    public const ACTION_CLASS = 'actionClass',
         ACTION_VARS = 'actionVars',
+        ACTION_GROUP = 'actionGroup',
         RESPONSE_VARS = 'responseVars'
     ;
 }

@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-use FastRoute\RouteCollector;
+use Binarydata\Shpongle\Http\Route\FastRouteCollection;
 
-use function FastRoute\simpleDispatcher;
-
-return simpleDispatcher(function (RouteCollector $r) {
-    // Define routes here
-});
+return (new FastRouteCollection())
+    // Add routes here
+    // ->get('/', \Me\MyAwesomeApp\HandlerOne::class)
+    // ->post('/save/', \Me\MyAwesomeApp\HandlerTwo::class)
+    // ... etc
+;

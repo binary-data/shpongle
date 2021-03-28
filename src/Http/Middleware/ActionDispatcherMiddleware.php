@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Binarydata\Shpongle\Http\Middleware;
 
+use Binarydata\Shpongle\App;
 use Binarydata\Shpongle\Http\RequestAttribute;
 use Binarydata\Shpongle\Http\ActionResolverInterface;
-use Fig\Http\Message\StatusCodeInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -17,23 +16,29 @@ final class ActionDispatcherMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private ActionResolverInterface $actionResolver,
-        private ResponseFactoryInterface $responseFactory
+        private array $middleware,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $action = $this->actionResolver->resolve($request->getAttribute(RequestAttribute::ACTION));
-
-        $redirectUrl = $action->redirectTo();
-
-        if ($redirectUrl !== null) {
-            return $this->responseFactory
-                ->createResponse(StatusCodeInterface::STATUS_MOVED_PERMANENTLY)
-                ->withHeader('Location', $redirectUrl);
+        if (! $handler instanceof App) {
+            return $handler->handle($request);
         }
 
-        $vars = $action->getResponseVars($request);
+        $group = $request->getAttribute(RequestAttribute::ACTION_GROUP);
 
-        return $handler->handle($request->withAttribute(RequestAttribute::RESPONSE_VARS, $vars));
+        /** @var MiddlewareInterface $middleware */
+        foreach ($this->middleware[$group]['before'] ?? [] as $middleware) {
+            $handler->push($middleware);
+        }
+
+        $handler->push($request->getAttribute(RequestAttribute::ACTION_CLASS));
+
+        /** @var MiddlewareInterface $middleware */
+        foreach ($this->middleware[$group]['after'] ?? [] as $middleware) {
+            $handler->push($middleware);
+        }
+
+        return $handler->handle($request);
     }
 }

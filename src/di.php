@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 use Binarydata\Shpongle\App;
 use Binarydata\Shpongle\Http\ContainerActionResolver;
+use Binarydata\Shpongle\Http\Middleware\ActionDispatcherMiddleware;
 use Binarydata\Shpongle\Http\Middleware\ContainerMiddlewareResolver;
 use Binarydata\Shpongle\Http\Middleware\MiddlewareResolverInterface;
 use Binarydata\Shpongle\Http\Middleware\NotFoundHandler;
 use Binarydata\Shpongle\Http\ActionResolverInterface;
+use Binarydata\Shpongle\Http\Route\RouteCollectionInterface;
 use Binarydata\Shpongle\Service\Config\ConfigFactory;
 use Binarydata\Shpongle\Service\Config\ConfigInterface;
 use Binarydata\Shpongle\Template\TemplateRendererInterface;
@@ -31,7 +33,13 @@ return [
     App::class => function (NotFoundHandler $defaultHandler, MiddlewareResolverInterface $middlewareResolver) {
         $pipe = require ROOT . 'config/middleware.php';
 
-        return new App($pipe, $defaultHandler, $middlewareResolver);
+        return new App($pipe[RouteCollectionInterface::GROUP_DEFAULT], $defaultHandler, $middlewareResolver);
+    },
+
+    ActionDispatcherMiddleware::class => function (ActionResolverInterface $resolver) {
+        $middlewares = require ROOT . 'config/middleware.php';
+
+        return new ActionDispatcherMiddleware($resolver, $middlewares);
     },
 
     ActionResolverInterface::class => fn (ContainerActionResolver $r) => $r,

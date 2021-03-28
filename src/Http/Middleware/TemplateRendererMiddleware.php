@@ -27,7 +27,7 @@ final class TemplateRendererMiddleware implements MiddlewareInterface
             ->createResponse()
             ->withBody(
                 $this->renderer->render(
-                    $this->templateFinder->find($request->getAttribute(RequestAttribute::ACTION)),
+                    $this->templateFinder->find($request->getAttribute(RequestAttribute::ACTION_CLASS)),
                     $request->getAttribute(RequestAttribute::RESPONSE_VARS),
                 )
             );
