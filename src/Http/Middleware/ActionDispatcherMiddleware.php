@@ -27,14 +27,14 @@ final class ActionDispatcherMiddleware implements MiddlewareInterface
 
         $group = $request->getAttribute(RequestAttribute::ACTION_GROUP);
 
-        /** @var MiddlewareInterface $middleware */
+        /** @var string $middleware */
         foreach ($this->middleware[$group]['before'] ?? [] as $middleware) {
             $handler->push($middleware);
         }
 
         $handler->push($request->getAttribute(RequestAttribute::ACTION_CLASS));
 
-        /** @var MiddlewareInterface $middleware */
+        /** @var string $middleware */
         foreach ($this->middleware[$group]['after'] ?? [] as $middleware) {
             $handler->push($middleware);
         }

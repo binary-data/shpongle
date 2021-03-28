@@ -7,7 +7,6 @@ namespace Binarydata\Shpongle;
 use Binarydata\Shpongle\Http\Middleware\MiddlewareResolverInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class App implements RequestHandlerInterface
@@ -35,8 +34,8 @@ final class App implements RequestHandlerInterface
         return $middleware->process($request, $this);
     }
 
-    public function push(MiddlewareInterface $middleware): void
+    public function push(string $middlewareClass): void
     {
-        $this->pipe[] = $middleware;
+        $this->pipe[] = $middlewareClass;
     }
 }
